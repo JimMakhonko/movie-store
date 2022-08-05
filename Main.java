@@ -6,18 +6,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
-    static Store store = new Store();
-    public static void main(String[] args) {
-        System.out.println("\n********************JAVA VIDEO STORE********************\n");
-try{
-    loadMovies("movies.txt");
-}catch (FileNotFoundException e){
-    System.out.println(e.getMessage());
-}finally {
-    System.out.println("MOVIES LOADED");
-    System.out.println(store);
 
-}
+    public static void main(String[] args) {
+Movie movie = new Movie("The Shawshank Redemption","Blue-Ray",8.8);
+        System.out.println(movie);
     }
 
     /**
@@ -37,7 +29,6 @@ public static void loadMovies(String filename) throws FileNotFoundException{
     scanner.useDelimiter("--");
     while(scanner.hasNextLine()){
         Movie movie = new Movie(scanner.next(), scanner.next(), scanner.nextDouble());
-        store.addMovie(movie);
     }
 }
     /**

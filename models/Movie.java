@@ -11,14 +11,8 @@ public class Movie {
     public Movie(String name, String format, double rating) {
         this.name = name;
         this.format = format;
-        if (this.format.equals("Blue-Ray")) {
-            setSellingPrice(4.25);
-            setRentalPrice(1.99);
-        }
-        if (this.format.equals("DVD")){
-            setSellingPrice(2.25);
-            setRentalPrice(0.99);
-        }
+        this.sellingPrice = format.equals("Blue-Ray") ? 4.25 : 2.25;
+        this.rentalPrice = format.equals("Blue-Ray") ? 1.99 : 0.99;
         this.rating = rating;
         this.isAvailable = true;
 
@@ -38,6 +32,8 @@ public class Movie {
 
     public void setFormat(String format) {
         this.format = format;
+        setSellingPrice(format.equals("Blue-Ray") ? 4.25 : 2.25);
+        setRentalPrice(format.equals("Blue-Ray") ? 1.99 : 0.99);
     }
 
     public double getRating() {
@@ -72,13 +68,14 @@ public class Movie {
         isAvailable = available;
     }
 
-    public Movie(Movie source){
+    public Movie(Movie source) {
         this.name = source.name;
         this.format = source.format;
         this.rating = source.rating;
         this.isAvailable = true;
     }
-    public String toString(){
+
+    public String toString() {
         return "\t Name: " + name + "\n" +
 
                 "\t Format: " + format + "\n" +
