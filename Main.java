@@ -10,15 +10,14 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("\n**********************JAVA VIDEO STORE**********************\n");
-        Movie movie = new Movie("The Shawshank Redemption", "Blue-Ray", 8.8);
-        Movie movie1 = new Movie("Idiocracy", "Blue-Ray", 9.9);
-        Movie movie2 = new Movie("Lol", "DVD", 9.2);
-        store.addMovie(movie);
-        store.addMovie(movie1);
-        store.addMovie(movie2);
-        store.action("Idiocracy", "rentMovie");
-        System.out.println(store);
-        store.action("Idiocracy","sellMovie");
+        try {
+            loadMovies("movies.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("MOVIES LOADED");
+            System.out.println(store);
+        }
     }
 
     /**
@@ -32,23 +31,25 @@ public class Main {
      * • 3. call close() from the Scanner object.
      */
 
-    public static void loadMovies(String filename) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream(filename);
+
+    /**
+     * Name: loadMovies
+     *
+     * @param fileName (String)
+     * @throws FileNotFoundException Inside the function:
+     *                               • 1. loads movies from <fileName>.txt.
+     *                               • 2. adds all movies to the store object's movie field.
+     *                               Hint: You will need to 'split' a String into three Strings.
+     */
+    public static void loadMovies(String fileName) throws FileNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(fileName);
         Scanner scanner = new Scanner(fileInputStream);
         scanner.useDelimiter("--");
         while (scanner.hasNextLine()) {
-            Movie movie = new Movie(scanner.next(), scanner.next(), scanner.nextDouble());
+            String line = scanner.nextLine();
+            String[] words = line.split("--");
+            store.addMovie(new Movie(words[0], words[1], Double.parseDouble(words[2])));
         }
+        scanner.close();
     }
-    /**
-     * Name: loadMovies
-     * @param fileName (String)
-     * @throws FileNotFoundException
-     *
-     * Inside the function:
-     *   • 1. loads movies from <fileName>.txt.
-     *   • 2. adds all movies to the store object's movie field.
-     *        Hint: You will need to 'split' a String into three Strings.
-     */
-
 }
