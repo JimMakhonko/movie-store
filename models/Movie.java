@@ -9,6 +9,15 @@ public class Movie {
     private boolean isAvailable;
 
     public Movie(String name, String format, double rating) {
+        if (name == null || name.isBlank())
+            throw new IllegalArgumentException("Name can't be blank/empty");
+        if (format == null || format.isBlank())
+            throw new IllegalArgumentException("Name must contain a value");
+        if (!(format.equalsIgnoreCase("dvd") || format.equalsIgnoreCase("blue-ray")))
+            throw new IllegalArgumentException("Wrong format, should be dvd/blue-ray");
+        if (rating < 0 || rating > 10)
+            throw new IllegalArgumentException("Invalid rating");
+
         this.name = name;
         this.format = format;
         this.sellingPrice = format.equals("Blue-Ray") ? 4.25 : 2.25;
@@ -18,11 +27,22 @@ public class Movie {
 
     }
 
+    public Movie(Movie source) {
+        this.name = source.name;
+        this.format = source.format;
+        this.rating = source.rating;
+        this.sellingPrice = source.sellingPrice;
+        this.rentalPrice = source.rentalPrice;
+        this.isAvailable = source.isAvailable;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null || name.isBlank())
+            throw new IllegalArgumentException("Name can't be null or blank");
         this.name = name;
     }
 
@@ -31,9 +51,11 @@ public class Movie {
     }
 
     public void setFormat(String format) {
+        if (!(format.equalsIgnoreCase("DVD") || format.equalsIgnoreCase("Blue-Ray")))
+            throw new IllegalArgumentException("Format must be DVD or Blue-Ray");
         this.format = format;
-        setSellingPrice(format.equals("Blue-Ray") ? 4.25 : 2.25);
-        setRentalPrice(format.equals("Blue-Ray") ? 1.99 : 0.99);
+        setSellingPrice(format.equalsIgnoreCase("Blue-Ray") ? 4.25 : 2.25);
+        setRentalPrice(format.equalsIgnoreCase("Blue-Ray") ? 1.99 : 0.99);
     }
 
     public double getRating() {
@@ -41,6 +63,8 @@ public class Movie {
     }
 
     public void setRating(double rating) {
+        if (rating < 0 || rating > 10)
+            throw new IllegalArgumentException("Invalid rating");
         this.rating = rating;
     }
 
@@ -49,6 +73,8 @@ public class Movie {
     }
 
     private void setSellingPrice(double sellingPrice) {
+        if (sellingPrice <= 0)
+            throw new IllegalArgumentException("Price can't be equal/less than 0");
         this.sellingPrice = sellingPrice;
     }
 
@@ -57,6 +83,8 @@ public class Movie {
     }
 
     private void setRentalPrice(double rentalPrice) {
+        if (rentalPrice <= 0)
+            throw new IllegalArgumentException("Price can't be equal/less than 0");
         this.rentalPrice = rentalPrice;
     }
 
@@ -68,12 +96,6 @@ public class Movie {
         isAvailable = available;
     }
 
-    public Movie(Movie source) {
-        this.name = source.name;
-        this.format = source.format;
-        this.rating = source.rating;
-        this.isAvailable = true;
-    }
 
     public String toString() {
         return "\t Name: " + name + "\n" +
@@ -86,6 +108,6 @@ public class Movie {
 
                 "\t Rental Price: " + rentalPrice + "\n" +
 
-                "\t Availability: " + isAvailable() + "\n";
+                "\t Availability: " + (this.isAvailable ? "in stock" : "rented") + "\n";
     }
 }
