@@ -10,6 +10,15 @@ public class Store {
         this.movies = new ArrayList<Movie>();
     }
 
+    public Movie getMovie(String name) {
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getName().equals(name)) {
+                return new Movie(movies.get(i));
+            }
+        }
+        return null;
+    }
+
     public Movie getMovies(int index) {
         return new Movie(movies.get(index));
     }
@@ -33,7 +42,7 @@ public class Store {
             if (movies.get(i).getName().equals(name)) {
                 switch (action) {
                     case "sellMovie" -> {
-                        if(!(movies.get(i).isAvailable()))
+                        if (!(movies.get(i).isAvailable()))
                             throw new IllegalStateException("Can't sell rented movie");
                         movies.remove(i);
                     }
